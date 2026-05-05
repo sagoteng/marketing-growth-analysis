@@ -78,8 +78,6 @@ Shift part of the growth focus from acquisition to customer retention and repeat
 
 - Python
 - Pandas
-- Matplotlib / Seaborn
-- Jupyter Notebook
 - VS Code
 
 ## Project Structure
