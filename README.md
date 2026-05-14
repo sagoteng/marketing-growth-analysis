@@ -1,90 +1,128 @@
 # Marketing Growth Analysis
+### Ecommerce Channel Performance & Predictive Budget Optimization
 
-A marketing performance analysis project focused on channel efficiency, CAC evolution, retention quality, and growth opportunities across paid, owned, and organic channels.
+A marketing performance analysis project combining **descriptive analytics** and **AI-powered predictive modeling** to answer a core business question:
+
+> *What should marketing do next to improve growth efficiency — and what is the revenue impact?*
+
+---
 
 ## Project Overview
 
-This project analyzes ecommerce marketing performance to answer a simple business question:
+This project analyzes ecommerce marketing performance across paid, owned, and organic channels. It goes beyond reporting what happened — it uses machine learning to **simulate the revenue impact of a proposed budget reallocation**, providing data-driven recommendations to marketing leadership.
 
-**What should marketing do next to improve growth efficiency?**
+The analysis is structured in two layers:
 
-The analysis focuses on identifying:
-- Which acquisition channels drive the most efficient growth
-- Where CAC is becoming too expensive
-- Which channels deserve more budget
-- How retention and owned channels can improve profitability
-- What strategic actions marketing should prioritize next
+| Layer | Type | Goal |
+|---|---|---|
+| **Descriptive Analysis** | `marketinganalysis.py` | Understand current channel performance |
+| **Predictive Modeling** | `marketinganalysis_predictive.py` | Forecast revenue impact of reallocation |
+
+---
 
 ## Dataset
 
-The dataset used in this project contains ecommerce marketing performance data across acquisition channels, including:
+`ecommerce_marketing_growth_2025.csv` — Daily ecommerce marketing performance across acquisition channels.
 
-- Spend
-- Customers acquired
-- Revenue
-- CAC
-- ROAS
-- Retention indicators
-- Channel-level performance trends
+| Column | Description |
+|---|---|
+| `date` | Daily granularity |
+| `channel` | Acquisition channel (Meta, Google, Email, Affiliate, Organic) |
+| `spend` | Marketing spend (€) |
+| `revenue` | Revenue generated (€) |
+| `clicks` | Clicks |
+| `sessions` | Sessions |
+| `conversions` | Conversions |
 
-Main file:
-- `ecommerce_marketing_growth_2025.csv`
+---
 
-## Objectives
+## Layer 1 — Descriptive Analysis
 
-The goal of this analysis is to:
+**File:** `marketinganalysis.py`
 
-1. Evaluate paid channel efficiency
-2. Identify overdependence on high-cost channels
-3. Compare paid vs owned vs organic performance
-4. Highlight retention and lifecycle opportunities
-5. Provide clear business recommendations
+Evaluates channel efficiency across 4 dimensions:
+
+- **Spend** — Budget distribution and monthly trends
+- **Revenue** — Revenue contribution and share by channel
+- **Efficiency** — ROAS, CAC, CPC, CVR, Revenue per Session
+- **Scaling** — Efficiency gap (revenue share vs spend share) and priority ranking
+
+---
+
+## Layer 2 — Predictive Modeling (AI-Powered)
+
+**File:** `marketinganalysis_predictive.py`
+
+Uses **Meta Prophet** (time series forecasting) to simulate the revenue impact of a proposed budget reallocation over the next 12 months.
+
+### How it works
+
+1. Trains a Prophet model per channel on historical daily revenue
+2. Applies a spend multiplier based on the proposed budget change
+3. Forecasts revenue, spend, and ROAS over 365 days
+4. Compares baseline vs reallocated scenario to quantify the uplift
+
+### Budget Reallocation Scenario
+
+| Channel | Current Spend | Proposed Spend | Change |
+|---|---|---|---|
+| Meta Ads | €260.9k | €180k | -€80.9k |
+| Google Ads | €204.9k | €190k | -€14.9k |
+| Affiliate | €65.4k | €35k | -€30.4k |
+| Email | €19.8k | €90k | +€70.2k |
+| Organic Search | €0 | €50k | +€50k |
+
+### Outputs
+
+- `forecast_reallocation.csv` — Full daily forecast per channel, ready for Power BI
+- `forecast_reallocation_by_channel.png` — Forecast charts per channel + global total with 95% confidence intervals
+
+---
 
 ## Key Insights
 
-### 1. Paid growth is too dependent on Meta
-Meta drives volume, but CAC is rising and efficiency is becoming less reliable.
+**1. Paid growth is too dependent on Meta**
+Meta drives volume but CAC is rising and efficiency is declining — it is the primary candidate for budget reallocation.
 
-### 2. Google is more efficient
-Google shows stronger intent and better efficiency, making it a better candidate for budget reallocation.
+**2. Email is the most efficient channel and is heavily underfunded**
+With the strongest ROAS and lowest CAC, Email should be the first channel scaled.
 
-### 3. Owned channels are underleveraged
-Email / CRM performance suggests room to improve retention, lifecycle flows, and monetization efficiency.
+**3. Google shows stronger intent and better paid efficiency**
+More efficient than Meta and worth protecting in any reallocation scenario.
 
-### 4. Organic is a scalable lever
-SEO and content remain strong long-term acquisition levers with lower marginal cost.
+**4. Organic Search is a scalable, low-cost acquisition lever**
+SEO and content investment can grow non-paid acquisition with strong long-term compounding.
 
-### 5. Paid efficiency needs guardrails
-Paid spend should be managed with clearer CAC / ROAS thresholds to avoid inefficient scaling.
+**5. Affiliate quality is uneven**
+Exposure to low-value partners is diluting efficiency — selective pruning is recommended.
+
+---
 
 ## Recommendations
 
-### 1. Rebalance paid budget
-Reduce dependency on Meta and reallocate part of paid spend toward Google.
+1. **Rebalance paid budget** — Reduce Meta dependency, reallocate toward Google and owned channels
+2. **Scale Email / CRM** — Invest in lifecycle automation and audience segmentation
+3. **Increase organic leverage** — SEO and content on high-intent pages
+4. **Set paid guardrails** — Introduce CAC and ROAS thresholds on Meta
+5. **Reassess affiliate partnerships** — Retain only placements delivering efficient incremental revenue
 
-### 2. Scale owned channels
-Invest more in Email / CRM through stronger lifecycle automation and retention programs.
+---
 
-### 3. Increase organic leverage
-Strengthen SEO and content on high-intent pages to improve efficient acquisition.
+## Tools & Libraries
 
-### 4. Control paid efficiency
-Set CAC / ROAS guardrails on paid media to prevent inefficient spend expansion.
+| Tool | Usage |
+|---|---|
+| Python | Core language |
+| Pandas | Data manipulation |
+| Meta Prophet | Time series forecasting |
+| Matplotlib | Data visualization |
+| VS Code | Development environment |
 
-### 5. Improve retention strategy
-Shift part of the growth focus from acquisition to customer retention and repeat purchase.
-
-## Tools Used
-
-- Python
-- Pandas
-- VS Code
+---
 
 ## Project Structure
 
-```bash
+```
 marketing-growth-analysis/
 │
-├── ecommerce_marketing_growth_2025.csv
-├── marketing_growth_analysis.ipynb
-└── README.md
+├── ecommerce_marketing_growth_2025.csv   # Raw data
