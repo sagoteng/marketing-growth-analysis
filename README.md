@@ -16,6 +16,7 @@ The analysis is structured in two layers:
 | Layer | Type | Goal |
 |---|---|---|
 | **Descriptive Analysis** | `marketinganalysis.py` | Understand current channel performance |
+| **Clustering (ML)** | `marketinganalysis_clustering.py` | Group channels by performance profile |
 | **Predictive Modeling** | `marketinganalysis_predictive.py` | Forecast revenue impact of reallocation |
 
 ---
@@ -49,7 +50,37 @@ Evaluates channel efficiency across 4 dimensions:
 
 ---
 
-## Layer 2 — Predictive Modeling (AI-Powered)
+## Layer 2 — K-Means Clustering (ML)
+
+**File:** `marketinganalysis_clustering.py`
+
+Uses **K-Means** (unsupervised machine learning) to automatically group channels by performance similarity — without any predefined labels. The algorithm answers: *"Which channels behave alike, and what does that tell us strategically?"*
+
+### How it works
+
+1. Builds a feature matrix of 6 efficiency metrics per channel (ROAS, CAC, CPC, CVR, Revenue per Session, Efficiency Gap)
+2. Standardizes all metrics so no single metric dominates
+3. Groups the 5 channels into 3 clusters: High / Mid / Low Efficiency
+4. Uses PCA to reduce 6 dimensions to 2D for visualization
+
+### Cluster Results
+
+| Cluster | Channels | Strategic Action |
+|---|---|---|
+| 🟢 High Efficiency | Email | Scale budget |
+| 🟡 Mid Efficiency | Google Ads, Affiliate, Organic Search | Optimize |
+| 🔴 Low Efficiency | Meta Ads | Reduce or restructure |
+
+> The clustering objectively confirms the budget reallocation recommendations using an ML approach — Email is underfunded, Meta is inefficient.
+
+### Outputs
+
+- `clustering_results.csv` — Cluster assignments and metrics per channel, ready for Power BI
+- `clustering_by_channel.png` — PCA scatter plot + ROAS vs CAC bubble chart
+
+---
+
+## Layer 3 — Predictive Modeling (AI-Powered)
 
 **File:** `marketinganalysis_predictive.py`
 
@@ -114,6 +145,7 @@ Exposure to low-value partners is diluting efficiency — selective pruning is r
 |---|---|
 | Python | Core language |
 | Pandas | Data manipulation |
+| Scikit-learn | K-Means clustering & PCA |
 | Meta Prophet | Time series forecasting |
 | Matplotlib | Data visualization |
 | VS Code | Development environment |
@@ -125,4 +157,9 @@ Exposure to low-value partners is diluting efficiency — selective pruning is r
 ```
 marketing-growth-analysis/
 │
-├── ecommerce_marketing_growth_2025.csv   # Raw data
+├── ecommerce_marketing_growth_2025.csv   # Raw dataset
+├── marketinganalysis.py                  # Layer 1 — Descriptive analysis
+├── marketinganalysis_clustering.py       # Layer 2 — K-Means clustering
+├── marketinganalysis_predictive.py       # Layer 3 — Predictive modeling
+└── README.md
+```
